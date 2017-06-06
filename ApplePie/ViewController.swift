@@ -9,6 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var treeImage: UIImageView!
+    @IBOutlet weak var correctWordLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet var letterButtons: [UIButton]!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +26,9 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func buttonTapped(_ sender: UIButton) {
+        sender.isEnabled = false
+    }
 
 }
 
