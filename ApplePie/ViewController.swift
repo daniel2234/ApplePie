@@ -10,6 +10,23 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //create an instance of the game in the to hold the game's value that it can controlled throughout the 
+    //controller
+    var currentGame : Game!
+    
+    
+    //created local variables in the controller to guess up to 7 times
+    //this array holds random words and to keep things simple we use lower case words
+    var listOfWords = ["apple", "orange", "blue", "red", "glorious", "beautiful", "stuff"]
+    let incorrectMovesAllowed = 7
+    
+    //the bottom label will display an updated count of the number of wins and losses
+    //created 2 variables to hold each value and set the intial value to 0
+    var totalWins = 0
+    var totalLosses = 0
+    
+    
+    
     @IBOutlet weak var treeImage: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -18,9 +35,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        //each round begins the selection of a new word
+        //resetting the moves the player can make 
+        newRound()
     }
 
+    func newRound() {
+        let newWord = listOfWords.removeFirst()
+        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed)
+        updateUI()
+        
+    }
+    
+    func updateUI(){
+        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
+        treeImage.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
