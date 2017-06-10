@@ -45,7 +45,8 @@ class ViewController: UIViewController {
 
     func newRound() {
         let newWord = listOfWords.removeFirst()
-        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed)
+        //updated intialization of struct
+        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
         updateUI()
         
     }
@@ -66,6 +67,10 @@ class ViewController: UIViewController {
         //this reads the buttons title to determine if letter in the word is trying to guess
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
+        currentGame.playerGuessed(letter: letter)
+        //everytime the user presses a button it gets added to the collection
+        print(currentGame.guessedLetters)
+        updateUI()
         
     }
 
