@@ -18,13 +18,14 @@ class ViewController: UIViewController {
     //created local variables in the controller to guess up to 7 times
     //this array holds random words and to keep things simple we use lower case words
     var listOfWords = ["apple", "orange", "blue", "red", "glorious", "beautiful", "stuff"]
+    //7 times is allowed
     let incorrectMovesAllowed = 7
     
     //the bottom label will display an updated count of the number of wins and losses
     //created 2 variables to hold each value and set the intial value to 0
     var totalWins = 0 {
         didSet {
-            // whenever the totalWins or totalLosses changes, a new round can be started, so this is a game property 
+            // whenever the totalWins or totalLosses changes, a new round can be started, so this is a game property
             newRound()
         }
     }
@@ -33,7 +34,7 @@ class ViewController: UIViewController {
             newRound()
         }
     }
-
+    //tree image changes based on number of incorrect timesz
     @IBOutlet weak var treeImage: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -50,12 +51,24 @@ class ViewController: UIViewController {
     }
 
     func newRound() {
-        let newWord = listOfWords.removeFirst()
-        //updated intialization of struct
-        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
-        updateUI()
+        if !listOfWords.isEmpty {
+            let newWord = listOfWords.removeFirst()
+            print(newWord)
+            //updated intialization of struct
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
+            enableLetterButtons(true)
+            updateUI()
+        } else {
+            enableLetterButtons(false)
+        }
     }
 
+    func enableLetterButtons(_ enable: Bool) {
+        for button in letterButtons {
+            button.isEnabled = enable
+        }
+    }
+    
     func updateUI(){
         var letters = [String]()
         for letter in currentGame.formattedWord.characters {
@@ -65,6 +78,7 @@ class ViewController: UIViewController {
         let wordWithSpacing = letters.joined(separator: " ")
         
         correctWordLabel.text = wordWithSpacing
+        
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
         //the image changes everytime you update the UI
         treeImage.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
@@ -72,14 +86,16 @@ class ViewController: UIViewController {
 
     @IBAction func buttonTapped(_ sender: UIButton) {
         sender.isEnabled = false
+        
         //this reads the buttons title to determine if letter in the word is trying to guess
         let letterString = sender.title(for: .normal)!
+        
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
         
+        
         //everytime the user presses a button it gets added to the collection
         print(currentGame.guessedLetters)
-        updateUI()
         updateGameState()
     }
     
@@ -96,4 +112,4 @@ class ViewController: UIViewController {
     }
 
 }
-
+//map method, and use it in place of the loop that converts the array of characters to an array of strings in updateUI
