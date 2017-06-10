@@ -24,9 +24,7 @@ class ViewController: UIViewController {
     //created 2 variables to hold each value and set the intial value to 0
     var totalWins = 0
     var totalLosses = 0
-    
-    
-    
+
     @IBOutlet weak var treeImage: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -37,7 +35,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //each round begins the selection of a new word
         //resetting the moves the player can make 
         newRound()
@@ -52,14 +49,16 @@ class ViewController: UIViewController {
     }
     
     func updateUI(){
+        var letters = [String]()
+        for letter in currentGame.formattedWord.characters {
+            letters.append(String(letter))
+        }
+        let wordWithSpacing = letters.joined(separator: " ")
+        
+        correctWordLabel.text = wordWithSpacing
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
         //the image changes everytime you update the UI
         treeImage.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -68,10 +67,10 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
+        
         //everytime the user presses a button it gets added to the collection
         print(currentGame.guessedLetters)
         updateUI()
-        
     }
 
 }
