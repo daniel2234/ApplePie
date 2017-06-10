@@ -53,6 +53,7 @@ class ViewController: UIViewController {
         for letter in currentGame.formattedWord.characters {
             letters.append(String(letter))
         }
+        //this method will concatenates the collection of strings into one string, seperated by a given value.
         let wordWithSpacing = letters.joined(separator: " ")
         
         correctWordLabel.text = wordWithSpacing
