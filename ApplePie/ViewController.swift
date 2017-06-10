@@ -30,6 +30,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var treeImage: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    
+    //outlet collection that has all the buttons connected
     @IBOutlet var letterButtons: [UIButton]!
     
 
@@ -50,6 +52,7 @@ class ViewController: UIViewController {
     
     func updateUI(){
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
+        //the image changes everytime you update the UI
         treeImage.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
     
@@ -60,6 +63,10 @@ class ViewController: UIViewController {
 
     @IBAction func buttonTapped(_ sender: UIButton) {
         sender.isEnabled = false
+        //this reads the buttons title to determine if letter in the word is trying to guess
+        let letterString = sender.title(for: .normal)!
+        let letter = Character(letterString.lowercased())
+        
     }
 
 }
