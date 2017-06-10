@@ -22,8 +22,17 @@ class ViewController: UIViewController {
     
     //the bottom label will display an updated count of the number of wins and losses
     //created 2 variables to hold each value and set the intial value to 0
-    var totalWins = 0
-    var totalLosses = 0
+    var totalWins = 0 {
+        didSet {
+            // whenever the totalWins or totalLosses changes, a new round can be started, so this is a game property 
+            newRound()
+        }
+    }
+    var totalLosses = 0 {
+        didSet {
+            newRound()
+        }
+    }
 
     @IBOutlet weak var treeImage: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
@@ -45,9 +54,8 @@ class ViewController: UIViewController {
         //updated intialization of struct
         currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
         updateUI()
-        
     }
-    
+
     func updateUI(){
         var letters = [String]()
         for letter in currentGame.formattedWord.characters {
@@ -72,6 +80,19 @@ class ViewController: UIViewController {
         //everytime the user presses a button it gets added to the collection
         print(currentGame.guessedLetters)
         updateUI()
+        updateGameState()
+    }
+    
+    func updateGameState(){
+        //A game is lost if incorrectmovesremaining reaches 0, it increments total losses
+        if currentGame.incorrectMovesRemaining == 0 {
+            totalLosses += 1
+            //if the game matches word with the formatted words it increases the total wins
+        } else if currentGame.word == currentGame.formattedWord {
+            totalWins += 1
+        } else {
+            updateUI()
+        }
     }
 
 }
